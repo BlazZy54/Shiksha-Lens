@@ -10,7 +10,7 @@ Team: Inn-Bit404 | Problem Statement: SIH25012
 ShikshaLens addresses the challenge of manual attendance marking, which is often time-consuming and prone to errors. 
 Our solution is a mobile-first web app that empowers teachers to record attendance swiftly and accurately.
 
-The process is simple: a teacher takes a few photos of the classroom, uploads them to our secure server, and our AI model detects and recognizes the students' faces, marking them present. 
+The process is simple: a teacher takes a few photos of the classroom, uploads them to our secure server, and our AI model detects and recognizes the students' faces, marking them present
 The teacher then receives an AI-generated attendance list and validates the suggestions for final accuracy. This human-in-the-loop approach ensures reliability while saving valuable classroom time.
 
 Benefits
