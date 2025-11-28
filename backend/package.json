@@ -1,7 +1,7 @@
 {
-  "name": "sih-backend",
+  "name": "Shiksha-Lens",
   "version": "1.0.0",
-  "description": "SIH Attendance Backend (Node.js + Express + PostgreSQL + JWT)",
+  "description": " Backend for  Shiksha-Lens (Node.js + Express + PostgreSQL + JWT)",
   "main": "server.js",
   "scripts": {
     "start": "node server.js",
