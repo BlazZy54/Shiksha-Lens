@@ -11,15 +11,6 @@ CREATE TABLE IF NOT EXISTS users (
   updated_at TIMESTAMP DEFAULT NOW()
 );
 
-CREATE TABLE IF NOT EXISTS classes (
-  id SERIAL PRIMARY KEY,
-  name TEXT NOT NULL,
-  section TEXT DEFAULT 'A',
-  teacher_id INT REFERENCES users(id),
-  created_at TIMESTAMP DEFAULT NOW(),
-  updated_at TIMESTAMP DEFAULT NOW()
-);
-
 CREATE TABLE IF NOT EXISTS students (
   id SERIAL PRIMARY KEY,
   name TEXT NOT NULL,
@@ -31,7 +22,14 @@ CREATE TABLE IF NOT EXISTS students (
   updated_at TIMESTAMP DEFAULT NOW()
 );
 
-
+CREATE TABLE IF NOT EXISTS classes (
+  id SERIAL PRIMARY KEY,
+  name TEXT NOT NULL,
+  section TEXT DEFAULT 'A',
+  teacher_id INT REFERENCES users(id),
+  created_at TIMESTAMP DEFAULT NOW(),
+  updated_at TIMESTAMP DEFAULT NOW()
+);
 
 CREATE TABLE IF NOT EXISTS class_students (
   id SERIAL PRIMARY KEY,
