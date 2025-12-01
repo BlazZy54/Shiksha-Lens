@@ -5,12 +5,12 @@ import Message from './Message';
 
 const SignUp = () => {
   const navigate = useNavigate();
-  const [formData, setFormData] = useState({ 
-    name: '', 
-    email: '', 
-    password: '', 
+  const [formData, setFormData] = useState({
+    name: '',
+    email: '',
+    password: '',
     confirmPassword: '',
-    role: 'student' 
+    role: 'student'
   });
   const [localError, setLocalError] = useState('');
   const [localSuccess, setLocalSuccess] = useState('');
@@ -82,13 +82,13 @@ const SignUp = () => {
       });
 
       // Check if approval is required
-      if (response?.requires_approval || (formData.role === 'teacher' || formData.role === 'gov')) {
+      if (response?.requires_approval || (formData.role === 'admin' || formData.role === 'teacher' || formData.role === 'gov')) {
         setLocalSuccess('Account created! Your account is pending admin approval. You will be able to login once approved.');
       } else {
         setLocalSuccess('Account created successfully! Redirecting to login...');
       }
       setShowMessage(true);
-      
+
       // Redirect to login after 3 seconds (longer for approval message)
       setTimeout(() => {
         navigate('/login');
@@ -214,9 +214,8 @@ const SignUp = () => {
           </div>
 
           {(localError || localSuccess) && (
-            <div className={`text-sm text-center p-3 rounded-md ${
-              localError ? 'text-red-600 bg-red-50' : 'text-green-600 bg-green-50'
-            }`}>
+            <div className={`text-sm text-center p-3 rounded-md ${localError ? 'text-red-600 bg-red-50' : 'text-green-600 bg-green-50'
+              }`}>
               {localError || localSuccess}
             </div>
           )}
