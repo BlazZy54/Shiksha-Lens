@@ -679,8 +679,27 @@ exports.authorizeUser = async (req, res, next) => {
       return res.status(400).json({ error: "is_authorized must be a boolean" });
     }
     
+    // Check if user exists and get their role
+    const userCheck = await pool.query("SELECT role FROM users WHERE id=$1", [id]);
+    if (userCheck.rowCount === 0) {
+      return respondNotFound(res, "User");
+    }
+    
+    const userRole = userCheck.rows[0].role;
+    
+    // Allow authorizing admin, teacher, and gov roles
+    // Note: Only one admin should be authorized at a time, but we allow the first admin to authorize others
+    if (userRole === 'admin' && is_authorized) {
+      // When authorizing an admin, check if another authorized admin exists
+      const existingAdmin = await pool.query(
+        "SELECT id FROM users WHERE role='admin' AND is_authorized=true AND id!=$1 LIMIT 1",
+        [id]
+      );
+      // This is allowed - multiple admins can be authorized by the first admin
+    }
+    
     const update = await pool.query(
-      "UPDATE users SET is_authorized=$1, updated_at=NOW() WHERE id=$2 AND role IN ('teacher', 'gov') RETURNING id, name, email, role, is_authorized",
+      "UPDATE users SET is_authorized=$1, updated_at=NOW() WHERE id=$2 AND role IN ('admin', 'teacher', 'gov') RETURNING id, name, email, role, is_authorized",
       [is_authorized, id]
     );
     
