@@ -1,4 +1,6 @@
-const API_BASE_URL = process.env.REACT_APP_API_BASE_URL || "http://localhost:3000/api";
+// Use REACT_APP_API_URL for VS Code Port Forwarding deployment
+// Falls back to localhost:5000 for local development
+const API_BASE_URL = process.env.REACT_APP_API_URL || process.env.REACT_APP_API_BASE_URL || "http://localhost:5000/api";
 
 const PYTHON_PLACEHOLDER = { success: true, candidates: [] };
 
