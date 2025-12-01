@@ -9,17 +9,34 @@ exports.register = async (req, res, next) => {
       return res.status(400).json({ error: "All fields required" });
     }
     const hashed = await bcrypt.hash(password, 10);
-    // Admin and student are auto-authorized, teacher and gov need admin approval
-    const isAuthorized = role === 'admin' || role === 'student';
+    
+    // Check if admin already exists when registering as admin
+    let isAuthorized;
+    if (role === 'admin') {
+      const adminCheck = await pool.query(
+        "SELECT id FROM users WHERE role='admin' AND is_authorized=true LIMIT 1"
+      );
+      // If an authorized admin exists, new admin needs approval
+      isAuthorized = adminCheck.rowCount === 0;
+    } else if (role === 'student') {
+      // Students are auto-authorized
+      isAuthorized = true;
+    } else {
+      // Teacher and gov need admin approval
+      isAuthorized = false;
+    }
+    
     await pool.query(
       "INSERT INTO users (name, email, password, role, is_authorized) VALUES ($1,$2,$3,$4,$5)",
       [name, email, hashed, role, isAuthorized]
     );
+    
+    const requiresApproval = !isAuthorized;
     res.status(201).json({ 
-      message: role === 'teacher' || role === 'gov' 
+      message: requiresApproval
         ? "Registered. Waiting for admin approval." 
         : "Registered",
-      requires_approval: role === 'teacher' || role === 'gov'
+      requires_approval: requiresApproval
     });
   } catch (err) {
     next(err);
@@ -35,8 +52,8 @@ exports.login = async (req, res, next) => {
     const ok = await bcrypt.compare(password, user.password);
     if (!ok) return res.status(401).json({ error: "Invalid credentials" });
     
-    // Check authorization for teacher and gov roles
-    if ((user.role === 'teacher' || user.role === 'gov') && !user.is_authorized) {
+    // Check authorization for teacher, gov, and admin roles
+    if (!user.is_authorized && (user.role === 'teacher' || user.role === 'gov' || user.role === 'admin')) {
       return res.status(403).json({ error: "Account pending admin approval. Please wait for authorization." });
     }
     
