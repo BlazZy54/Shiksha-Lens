@@ -1,17 +1,13 @@
-// React imports for context, state, memoization, etc.
 import React, { createContext, useContext, useEffect, useMemo, useState } from 'react';
 import apiClient from '../services/apiClient';
 
-// Creating authentication context
 const AuthContext = createContext();
 
-// Keys for storing user & token in localStorage
 const STORAGE_KEYS = {
   user: 'attendance_user',
   token: 'attendance_token'
 };
 
-// Labels for user roles
 const ROLE_LABELS = {
   teacher: 'Teacher',
   admin: 'Administrator',
@@ -19,13 +15,12 @@ const ROLE_LABELS = {
   student: 'Student'
 };
 
-// Decodes a JWT token (payload only)
 const decodeToken = (token) => {
   if (!token) return null;
   const parts = token.split('.');
   if (parts.length !== 3) return null;
   try {
-    const payload = JSON.parse(atob(parts[1])); // decode JWT payload
+    const payload = JSON.parse(atob(parts[1]));
     return payload;
   } catch (err) {
     console.warn('Failed to decode token', err);
@@ -33,7 +28,6 @@ const decodeToken = (token) => {
   }
 };
 
-// Builds a user object from decoded token data
 const buildUserFromToken = (token) => {
   const decoded = decodeToken(token);
   if (!decoded) return null;
@@ -52,7 +46,6 @@ const buildUserFromToken = (token) => {
   };
 };
 
-// Hook to access auth context
 export const useAuth = () => {
   const context = useContext(AuthContext);
   if (!context) {
@@ -61,18 +54,15 @@ export const useAuth = () => {
   return context;
 };
 
-// Auth provider component
 export const AuthProvider = ({ children }) => {
-  const [user, setUser] = useState(null);       // logged-in user state
-  const [isLoading, setIsLoading] = useState(true); // loading state during startup
-  const [error, setError] = useState(null);     // login error
+  const [user, setUser] = useState(null);
+  const [isLoading, setIsLoading] = useState(true);
+  const [error, setError] = useState(null);
 
-  // On component mount: load user/token from localStorage
   useEffect(() => {
     const token = localStorage.getItem(STORAGE_KEYS.token);
     const storedUser = localStorage.getItem(STORAGE_KEYS.user);
 
-    // Try rebuilding user from token
     if (token) {
       const rebuilt = buildUserFromToken(token);
       if (rebuilt) {
@@ -83,7 +73,6 @@ export const AuthProvider = ({ children }) => {
       }
     }
 
-    // If token invalid, try stored user fallback
     if (storedUser) {
       try {
         const parsed = JSON.parse(storedUser);
@@ -96,16 +85,14 @@ export const AuthProvider = ({ children }) => {
     setIsLoading(false);
   }, []);
 
-  // Login function
   const login = async ({ email, password }) => {
     setError(null);
     try {
-      const { token } = await apiClient.login({ email, password }); // API call
+      const { token } = await apiClient.login({ email, password });
       const userData = buildUserFromToken(token);
       if (!userData) {
         throw new Error('Invalid token payload');
       }
-      // Save token & user locally
       localStorage.setItem(STORAGE_KEYS.token, token);
       localStorage.setItem(STORAGE_KEYS.user, JSON.stringify(userData));
       setUser(userData);
@@ -116,14 +103,12 @@ export const AuthProvider = ({ children }) => {
     }
   };
 
-  // Logout function
   const logout = () => {
     setUser(null);
     localStorage.removeItem(STORAGE_KEYS.user);
     localStorage.removeItem(STORAGE_KEYS.token);
   };
 
-  // Memoized context value to prevent unnecessary renders
   const value = useMemo(() => ({
     user,
     login,
@@ -133,7 +118,6 @@ export const AuthProvider = ({ children }) => {
     clearError: () => setError(null)
   }), [user, isLoading, error]);
 
-  // Provide authentication context to the app
   return (
     <AuthContext.Provider value={value}>
       {children}

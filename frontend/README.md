@@ -1,4 +1,4 @@
-# Shiksha-Lens
+# Rural School Attendance System
 
 A comprehensive web-based attendance system designed specifically for rural schools, built with React and TailwindCSS. The system supports four different user roles with tailored functionality for each.
 
