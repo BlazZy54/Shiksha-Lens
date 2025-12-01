@@ -689,7 +689,7 @@ const AdminDashboard = () => {
       return <div className="p-6 text-center text-sm text-gray-500">Loading users...</div>;
     }
 
-    const pendingUsers = allUsers.filter(u => (u.role === 'teacher' || u.role === 'gov') && !u.is_authorized);
+    const pendingUsers = allUsers.filter(u => (u.role === 'admin' || u.role === 'teacher' || u.role === 'gov') && !u.is_authorized);
     
     return (
       <>
@@ -791,7 +791,7 @@ const AdminDashboard = () => {
                     {new Date(user.created_at).toLocaleDateString()}
                   </td>
                   <td className="px-6 py-4 whitespace-nowrap text-sm font-medium">
-                    {(user.role === 'teacher' || user.role === 'gov') && (
+                    {(user.role === 'admin' || user.role === 'teacher' || user.role === 'gov')&&(
                       <>
                         {!user.is_authorized ? (
                           <button
