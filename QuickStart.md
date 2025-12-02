@@ -1,4 +1,4 @@
-# Quick Start Guide - Smart Attendance System
+# Quick Start Guide - Shiksha-Lens
 
 ## Prerequisites
 - Node.js 16+
@@ -11,10 +11,10 @@
 ### 1. Database Setup
 ```bash
 # Create database
-createdb sih_attendance
+createdb schooldata
 
 # Run schema
-psql sih_attendance < sih-backend/schema.sql
+psql schooldata < sih-backend/schema.sql
 ```
 
 ### 2. Python ML Service
@@ -49,7 +49,7 @@ npm install
 npm start
 ```
 
-**Verify:** Open http://localhost:3000 (or 3001)
+**Verify:** Open http://localhost:3000
 
 ## Testing the Integration
 
@@ -113,17 +113,18 @@ curl -X POST http://localhost:3000/api/teacher/attendance/1/confirm \
 ML_SERVICE_URL=http://localhost:8000
 DB_HOST=localhost
 DB_PORT=5432
-DB_NAME=sih_attendance
+DB_NAME=schooldata
 DB_USER=postgres
 DB_PASSWORD=your_password
 JWT_SECRET=your_secret_key
 JWT_EXPIRES_IN=1d
-PORT=3000
+PORT=5000
 ```
 
 ## Ports
-- Frontend: 3000 (or 3001)
-- Backend: 3000
+- Frontend: 3000
+- Backend: 5000
 - Python ML Service: 8000
 - PostgreSQL: 5432
+
 
