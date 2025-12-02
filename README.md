@@ -22,13 +22,12 @@ Data-Driven Insights: Provides analytics to help in policy-making and administra
 ✨ Key Features
 Privacy First: We prioritize student privacy. Instead of storing raw photos, the system generates and stores encrypted facial embeddings, ensuring that personal data is secure.
 Human-in-the-Loop: To guarantee 100% accuracy and maintain teacher accountability, all AI-generated attendance suggestions are presented to the teacher for final validation before submission.
-Secure & Validated: The system employs geo-tagging and timestamping on all image uploads. This ensures that attendance is marked from the correct location and at the right time, preventing any misuse.
 Admin Dashboard: A central dashboard provides administrators and officers with real-time analytics, attendance trends, and overall control of the system.
 
 🛠️ Tech Stack
 Frontend: A responsive and teacher-friendly UI built with React and styled with Tailwind CSS.
-Backend: A robust API built with Django REST Framework to handle authentication, data management, and the core logic.
-Machine Learning: Utilizes MTCNN for accurate face detection and FaceNet for generating powerful facial embeddings.
+Backend: A robust API built with Node.js and Express to handle authentication, data management, and the core logic.
+ML Microservice: Utilizes DeepFace for accurate face detection and recognition, deployed as a FastAPI microservice.
 Database: PostgreSQL is used for reliable and scalable data storage.
 
 👨‍💻 Workflow & Usage =>
